@@ -73,7 +73,7 @@ app.post('/api/ai/chat',limit('ai',12,6e4),async(q,s)=>{
  while(m.length&&m[0].role!=='user')m.shift();if(!m.length||m[m.length-1].role!=='user')return s.status(400).json({error:'Please type a question.'});
  aiHour.push(now);
  try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+(E.AI_MODEL||'gemini-2.5-flash')+':generateContent',{method:'POST',headers:{'x-goog-api-key':key,'content-type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:SYS()}]},contents:m.map(x=>({role:x.role==='assistant'?'model':'user',parts:[{text:x.content}]}))}),signal:AbortSignal.timeout(20000)});
-  if(!r.ok)throw new Error('upstream '+r.status);const j=await r.json();const a=(j.candidates?.[0]?.content?.parts||[]).map(c=>c.text||'').join('\n').trim();if(!a)throw new Error('empty');
+  if(!r.ok){const body=await r.text();console.error('AI upstream:',r.status,body.slice(0,500));throw new Error('upstream '+r.status);};const j=await r.json();const a=(j.candidates?.[0]?.content?.parts||[]).map(c=>c.text||'').join('\n').trim();if(!a)throw new Error('empty');
   s.json({answer:a.slice(0,1500)})}catch(e){console.error('AI error:',e.message);s.status(502).json({error:'The AI assistant is temporarily unavailable.'})}});
 app.post('/api/ai/whatsapp',limit('aiw',6,6e4),async(q,s)=>{
  const key=E.GEMINI_API_KEY;if(!key)return s.status(503).json({error:'Summary unavailable'});
@@ -82,7 +82,7 @@ app.post('/api/ai/whatsapp',limit('aiw',6,6e4),async(q,s)=>{
  if(!m.length)return s.status(400).json({error:'No conversation'});aiHour.push(now);
  const sys='Write a short WhatsApp message from a website visitor to Ritesh Bhandari (web designer), in the FIRST PERSON as the visitor, starting with "Hi Ritesh,". Summarise what the visitor asked and any project requirements or context they shared (service type, goals, timeline or budget only if the visitor stated them). Match the visitor\'s language and style exactly (English, Hindi, Hinglish or mixed). Maximum 90 words. Do not invent details, do not include phone numbers, emails or other personal data, and do not mention this is AI-generated. Output only the message text.';
  try{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+(E.AI_MODEL||'gemini-2.5-flash')+':generateContent',{method:'POST',headers:{'x-goog-api-key':key,'content-type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:'Conversation:\n'+m.join('\n')}]}]}),signal:AbortSignal.timeout(20000)});
-  if(!r.ok)throw new Error('upstream '+r.status);const j=await r.json();const a=(j.candidates?.[0]?.content?.parts||[]).map(c=>c.text||'').join('\n').trim();if(!a)throw new Error('empty');s.json({message:a.slice(0,900)})}catch(e){console.error('AI summary error:',e.message);s.status(502).json({error:'Summary unavailable'})}});
+  if(!r.ok){const body=await r.text();console.error('AI upstream:',r.status,body.slice(0,500));throw new Error('upstream '+r.status);};const j=await r.json();const a=(j.candidates?.[0]?.content?.parts||[]).map(c=>c.text||'').join('\n').trim();if(!a)throw new Error('empty');s.json({message:a.slice(0,900)})}catch(e){console.error('AI summary error:',e.message);s.status(502).json({error:'Summary unavailable'})}});
 // admin auth
 const sec=()=>{if(!E.SESSION_SECRET||E.SESSION_SECRET.length<16)throw new Error('SESSION_SECRET (16+ chars) required');return E.SESSION_SECRET};
 const sign=p=>crypto.createHmac('sha256',sec()).update(p).digest('base64url');
