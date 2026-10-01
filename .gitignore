@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.db
+*.db-wal
+*.db-shm
+data/*.db*
+.DS_Store
+
+# Local server backups
+server.js.*

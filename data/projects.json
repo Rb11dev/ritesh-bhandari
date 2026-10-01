@@ -1,0 +1,187 @@
+[
+ {
+  "slug": "faishonfit",
+  "name": "FAISHONFIT",
+  "category": "E-commerce / Fashion",
+  "label": "Concept project",
+  "year": "",
+  "role": "",
+  "description": "A fashion e-commerce storefront concept — collections, product discovery, cart and an editorial lookbook.",
+  "overview": "FaishonFit is a full storefront concept for a fashion brand. The live site presents six collections, product listings with pricing and badges, an editorial lookbook and supporting shop pages.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Six collection categories (Women, Men, Streetwear, Sportswear, Maison, seasonal drop)",
+   "Product listings with prices, sale and new-arrival badges and add-to-cart",
+   "Editorial lookbook pages",
+   "Best-sellers and trending product sections",
+   "Account, size guide, FAQ, shipping and returns pages",
+   "Newsletter sign-up"
+  ],
+  "tech": [
+   "Next.js",
+   "React"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://faishonfit.vercel.app/",
+  "note": "Concept project. The brand story, statistics, reviews and prices on the site are sample content for a concept brand — they are not results or clients of Ritesh Bhandari.",
+  "image": ""
+ },
+ {
+  "slug": "jainico",
+  "name": "JAINICO",
+  "category": "Corporate / Industrial",
+  "label": "Listed as a client project on Devbit India",
+  "year": "",
+  "role": "",
+  "description": "A multi-page corporate website for a metal pretreatment and specialty chemicals manufacturer.",
+  "overview": "A multi-page corporate site presenting a metal pretreatment and specialty chemicals manufacturer: its product families, industries served, technology and R&D, locations and enquiry route.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Product range organised into six chemistry families",
+   "Seven industry pages",
+   "Technology & R&D section with process illustrations",
+   "Company, quality-certification and locations information",
+   "Quote / enquiry route and contact pages",
+   "Sustainability and careers pages"
+  ],
+  "tech": [
+   "Next.js",
+   "React"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://jainico.vercel.app/",
+  "note": "Company history, certifications and figures shown on the site belong to the company presented, not to Ritesh Bhandari.",
+  "image": ""
+ },
+ {
+  "slug": "techcorp",
+  "name": "TECHCORP",
+  "category": "Enterprise / Technology",
+  "label": "Concept project",
+  "year": "",
+  "role": "",
+  "description": "A corporate enterprise-technology website with services, leadership and a contact section.",
+  "overview": "TechCorp is a single-page corporate website concept for an enterprise technology company, with a services overview, about section, leadership profiles and a contact form.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Services overview across six offerings",
+   "About and leadership sections",
+   "Contact section with enquiry form",
+   "Responsive single-page navigation"
+  ],
+  "tech": [
+   "HTML",
+   "CSS",
+   "JavaScript"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://rb11dev.github.io/techcorp/",
+  "note": "Concept project for a fictional company. Its statistics, leadership names and client claims are sample content and are not Ritesh Bhandari's achievements.",
+  "image": ""
+ },
+ {
+  "slug": "ricochet-nova",
+  "name": "RICOCHET NOVA",
+  "category": "Game / Interactive Experience",
+  "label": "Personal project",
+  "year": "",
+  "role": "",
+  "description": "An original neon brick-breaking puzzle game for the browser — swipe to aim, chain combos, survive the descent.",
+  "overview": "Ricochet Nova is an original browser puzzle game. Players swipe to aim and fire balls that ricochet off walls to shatter numbered bricks before they reach the danger line.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Level Mode with 100 stages and a boss every 10th level",
+   "Endless Mode and a Daily Challenge",
+   "Upgrade shop with upgrades, skins, themes and launchers",
+   "Settings for sound, music, vibration and reduced motion",
+   "Touch-first swipe-to-aim controls",
+   "Art drawn procedurally and sounds synthesised live, per the game's own About text"
+  ],
+  "tech": [
+   "HTML5 Canvas",
+   "JavaScript",
+   "CSS"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://rb11dev.github.io/ricochet.nova1/",
+  "note": "Personal project.",
+  "image": ""
+ },
+ {
+  "slug": "elora",
+  "name": "ÉLORA",
+  "category": "Hospitality / Café / Experience Design",
+  "label": "Concept project",
+  "year": "",
+  "role": "",
+  "description": "A single-page concept site for a fictional New Delhi café — story, menu, gallery and reservations.",
+  "overview": "Élora Café is a concept website for a fictional coffee house in New Delhi, built around storytelling, a signature-drink feature, a menu, time-of-day experience sections, a gallery and a reservation form.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Story and signature-item sections",
+   "Menu and opening hours",
+   "Morning / afternoon / evening experience storytelling",
+   "Photo gallery and guest-book section",
+   "Reservation form (demo — no real booking is created)",
+   "FAQ and skip-to-content accessibility link"
+  ],
+  "tech": [
+   "HTML",
+   "CSS",
+   "JavaScript"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://rb11dev.github.io/Elora/",
+  "note": "The café, its reviews and its contact details are fictional demo content; the site itself states that no real booking is created.",
+  "image": ""
+ },
+ {
+  "slug": "devbit-india",
+  "name": "DEVBIT INDIA",
+  "category": "Freelance Web Design / Digital Studio",
+  "label": "Separate freelance brand",
+  "year": "",
+  "role": "",
+  "description": "The website of Devbit India, a freelance web development studio — services, projects, process and enquiries.",
+  "overview": "Devbit India is a separate freelance web development brand. Its website presents services, selected projects, a step-by-step process, an about section, FAQs and an enquiry form.",
+  "challenge": "",
+  "approach": "",
+  "design": "",
+  "solution": "",
+  "features": [
+   "Services, projects, process, about and contact pages",
+   "Seven-stage project process",
+   "Project enquiry form and WhatsApp contact",
+   "FAQ section"
+  ],
+  "tech": [
+   "Next.js",
+   "TypeScript"
+  ],
+  "techSource": "Technology as stated on the Devbit India project listing (devbit-india.vercel.app).",
+  "result": "",
+  "liveUrl": "https://devbit-india.vercel.app/",
+  "note": "Devbit India is a separate freelancing brand and is not the same identity as Ritesh Bhandari. No client, team-size or results claims are made here.",
+  "image": ""
+ }
+]
