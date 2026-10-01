@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express=require('express'),path=require('path'),crypto=require('crypto'),fs=require('fs');
-const {Resend}=require('resend');
 const { createClient } = require('@libsql/client'),nodemailer=require('nodemailer');
 const E=process.env,PORT=E.PORT||3000,SITE=(E.SITE_URL||`http://localhost:${PORT}`).replace(/\/$/,''),PROD=E.NODE_ENV==='production';
 const db=createClient({
@@ -18,10 +17,17 @@ app.use('/api',(q,s,n)=>{if(q.method!=='GET'){const o=q.get('origin');if(o){try{
 const hits=new Map();const limit=(key,max,ms)=>(q,s,n)=>{const k=key+q.ip,t=Date.now(),a=(hits.get(k)||[]).filter(x=>t-x<ms);if(a.length>=max)return s.status(429).json({error:'Too many requests. Please try again later.'});a.push(t);hits.set(k,a);n()};
 setInterval(()=>{const t=Date.now();for(const[k,a]of hits)if(!a.some(x=>t-x<36e5))hits.delete(k)},6e5).unref();
 // mail
-const resend=E.RESEND_API_KEY?new Resend(E.RESEND_API_KEY):null;
+const smtp=E.SMTP_HOST&&E.SMTP_PORT&&E.SMTP_USER&&E.SMTP_PASS
+  ?nodemailer.createTransport({
+    host:E.SMTP_HOST,
+    port:Number(E.SMTP_PORT),
+    secure:Number(E.SMTP_PORT)===465,
+    auth:{user:E.SMTP_USER,pass:E.SMTP_PASS}
+  })
+  :null;
 // public API
 app.get('/api/site',(q,s)=>s.json(read('site.json')));
-app.get('/api/health',async(q,s)=>{let db_ok=false;try{await db.execute('SELECT 1');db_ok=true}catch(e){}s.status(db_ok?200:503).json({ok:db_ok,db:db_ok,email_configured:!!resend,admin_configured:!!(E.ADMIN_PASSWORD_HASH||E.ADMIN_PASSWORD)})});
+app.get('/api/health',async(q,s)=>{let db_ok=false;try{await db.execute('SELECT 1');db_ok=true}catch(e){}s.status(db_ok?200:503).json({ok:db_ok,db:db_ok,email_configured:!!smtp,admin_configured:!!(E.ADMIN_PASSWORD_HASH||E.ADMIN_PASSWORD)})});
 app.get('/api/projects',(q,s)=>s.json(read('projects.json')));
 app.get('/api/testimonials',(q,s)=>s.json(read('testimonials.json')));
 const OPT={service:['Website Design','Website Development','Landing Pages','E-commerce Websites','Creative Web Experiences','UI/UX Design','Website Redesign','Interactive Experiences','Not sure yet']};
@@ -41,8 +47,19 @@ app.post('/api/enquiry',limit('enq',5,36e5),async(q,s)=>{
    id=String(r.lastInsertRowid);
  }catch(e){console.error('DB error',e);return s.status(500).json({error:'Could not save your enquiry. Please try again or email directly.'})}
  let emailed=false;
- if(resend&&MAIL_TO){try{const{data,error}=await resend.emails.send({from:E.MAIL_FROM||'onboarding@resend.dev',to:MAIL_TO,replyTo:d.email,subject:`New enquiry #${id} from ${d.name}`,text:Object.entries(d).map(([k,v])=>`${k}: ${v||'-'}`).join('\n'),html:'<h2>New project enquiry</h2><table cellpadding="6">'+Object.entries(d).map(([k,v])=>`<tr><td><b>${esc(k)}</b></td><td>${esc(v||'-').replace(/\n/g,'<br>')}</td></tr>`).join('')+'</table>'});if(error)throw new Error(error.message||'Resend error');emailed=true;await db.execute({sql:'UPDATE enquiries SET emailed=1 WHERE id=?',args:[id]})}catch(e){console.error('Resend error',e.message)}}
- else console.warn('Resend not configured; enquiry saved only.');
+ if(smtp&&MAIL_TO){try{
+   await smtp.sendMail({
+     from:E.SMTP_USER,
+     to:MAIL_TO,
+     replyTo:d.email,
+     subject:`New enquiry #${id} from ${d.name}`,
+     text:Object.entries(d).map(([k,v])=>`${k}: ${v||'-'}`).join('\n'),
+     html:'<h2>New project enquiry</h2><table cellpadding="6">'+Object.entries(d).map(([k,v])=>`<tr><td><b>${esc(k)}</b></td><td>${esc(v||'-').replace(/\n/g,'<br>')}</td></tr>`).join('')+'</table>'
+   });
+   emailed=true;
+   await db.execute({sql:'UPDATE enquiries SET emailed=1 WHERE id=?',args:[id]})
+ }catch(e){console.error('SMTP error',e.message)}}
+ else console.warn('SMTP not configured; enquiry saved only.');
  s.status(201).json({ok:true,id,emailed});
 });
 // AI assistant (public knowledge only; key stays server-side)
@@ -116,7 +133,7 @@ app.use(express.static(pub,{index:false,maxAge:PROD?'7d':0}));
 app.use((q,s)=>s.status(404).sendFile(path.join(pub,'404.html')));
 if(E.ADMIN_PASSWORD_HASH||E.ADMIN_PASSWORD)sec();
 if(!E.ADMIN_USER||!(E.ADMIN_PASSWORD_HASH||E.ADMIN_PASSWORD))console.warn('[setup] Admin login DISABLED: set ADMIN_USER, ADMIN_PASSWORD_HASH and SESSION_SECRET in .env');
-if(!resend)console.warn('[setup] Resend not configured: enquiries are saved to the database but no email is sent.');
+if(!smtp)console.warn('[setup] SMTP not configured: enquiries are saved to the database but no email is sent.');
 app.use((e,q,s,n)=>{if(e.type==='entity.parse.failed')return s.status(400).json({error:'Invalid JSON.'});console.error('Server error:',e.message);s.status(500).json({error:'Something went wrong.'})});
 const initDb=()=>db.execute(`CREATE TABLE IF NOT EXISTS enquiries(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
