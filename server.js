@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express=require('express'),path=require('path'),crypto=require('crypto'),fs=require('fs');
 const { createClient } = require('@libsql/client'),nodemailer=require('nodemailer');
-const E=process.env,PORT=E.PORT||3000,SITE=(E.SITE_URL||`http://localhost:${PORT}`).replace(/\/$/,''),PROD=E.NODE_ENV==='production';
+const E=process.env,PORT=E.PORT||3000,PROD=E.NODE_ENV==='production',SITE=(E.SITE_URL||(PROD?'https://ritesh-bhandari.vercel.app':`http://localhost:${PORT}`)).replace(/\/$/,'');
 const db=createClient({
   url:E.TURSO_DATABASE_URL,
   authToken:E.TURSO_AUTH_TOKEN
